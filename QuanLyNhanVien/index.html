@@ -187,8 +187,7 @@
 				<!-- Modal body -->
 				<div class="modal-body">
 
-					<form role="form" name="myForm" action="/action_page.php" onsubmit="return validateForm()"
-						method="post">
+					<form role="form" action="" method="post" name="myForm" onsubmit="return validate()">
 
 						<div class="form-group">
 							<div class="input-group">
@@ -196,7 +195,7 @@
 									<span class="input-group-text"><i class="fa fa-user"></i></span>
 								</div>
 								<input type="text" name="tk" id="tknv" class="form-control input-sm"
-									placeholder="Tài khoản" required>
+									placeholder="Tài khoản">
 							</div>
 
 							<span class="sp-thongbao" id="tbTKNV"></span>
@@ -219,7 +218,7 @@
 									<span class="input-group-text"><i class="fa fa-envelope"></i></span>
 								</div>
 								<input type="email" name="email" id="email" class="form-control input-sm"
-									placeholder="Email">
+									 placeholder="Email">
 							</div>
 
 							<span class="sp-thongbao" id="tbEmail"></span>
@@ -230,7 +229,7 @@
 								<div class="input-group-prepend">
 									<span class="input-group-text"><i class="fa fa-key"></i></span>
 								</div>
-								<input type="password" name="password" id="password" class="form-control input-sm"
+								<input type="text" name="password" id="password" class="form-control input-sm"
 									placeholder="Mật khẩu">
 							</div>
 							<span class="sp-thongbao" id="tbMatKhau"></span>
@@ -253,8 +252,8 @@
 								<div class="input-group-prepend">
 									<span class="input-group-text"><i class="fa fa-money" aria-hidden="true"></i></span>
 								</div>
-								<input type="text" name="luongCB" id="luongCB" class="form-control input-sm"
-									placeholder="Lương cơ bản">
+								<input type="text" name="luongCB" id="luongCB" class="form-control input-sm inputnumber"
+									placeholder="Lương cơ bản"/>
 							</div>
 							<span class="sp-thongbao" id="tbLuongCB"></span>
 						</div>
@@ -290,7 +289,7 @@
 
 				<!-- Modal footer -->
 				<div class="modal-footer" id="modal-footer">
-					<button id="btnThemNV" type="button" class="btn btn-success">Thêm người dùng</button>
+					<button id="btnThemNV" type="submit" class="btn btn-success nhanVien">Thêm người dùng</button>
 					<button id="btnCapNhat" type="button" class="btn btn-success">Cập nhật</button>
 					<button id="btnDong" type="button" class="btn btn-danger" data-dismiss="modal">Đóng</button>
 				</div>
@@ -326,6 +325,22 @@
 			});
 		});
 	</script>
+	<!--JS Validator-->
+	<script src="./js/approvejs-master/dist/approve.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/approvejs/3.1.2/approve.min.js"
+		integrity="sha512-TmhOO3rUu5WfsLdsw9H1pB/p5/A/KnhydCuLNGlZoukfUUopMmA2sq6DWR9E+acuLB1DBk2A8cq63f7JMwHgVQ=="
+		crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<!--Format ngày tháng năm-->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.3/moment.min.js"
+		integrity="sha512-Nc/kbBzoeUiDyBdm5txc/5t+nTxRSrVV6LVkZpFnBgzi29MtKX6lGVr1tYAbH5TXpjaukCv2W6XYw7rPYA4QBQ=="
+		crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<script>
+		if (!window.moment) {
+			document.write('<script src="assets/plugins/moment/moment.min.js"><\/script>');
+		}
+	</script>
+
+	<script src="./models/NhanVien.js"></script>
 	<script src="./js/index.js"></script>
 </body>
 
