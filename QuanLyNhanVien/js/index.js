@@ -6,7 +6,6 @@
 
 //TASK2: Thêm nhân viên mới
 
-var form = [];
 var mangNhanVien = [];
 
 document.getElementById('btnThem').onclick = function () {
@@ -624,6 +623,27 @@ document.querySelector('#btnCapNhat').onclick = function () {
     //lưu localstorage sau khi sửa
     luulocalStorage();
 }
+
+//TÌM VÀ XUẤT LOẠI NHÂN VIÊN
+var arrXepLoai = [];
+document.querySelector('#btnTimNV').onclick = function () {
+    var loaiNhanVien = document.querySelector('#searchName').value;
+    //lấy ra thông tin nhân viên tại vị trí đó
+    // var indexSort = mangNhanVien.findIndex(nv => nv.xepLoai === loaiNhanVien);
+    for (var index = 0; index < mangNhanVien.length; index++) {
+        var nvSort = mangNhanVien[index];
+        if (nvSort.xepLoai === loaiNhanVien) {
+            arrXepLoai.push(nvSort);
+        }
+    }
+
+    console.log('arrXepLoai', arrXepLoai);
+    //gọi hàm tạo lại table sau khi xóa
+    renderTableNhanVien(arrXepLoai);
+    //lưu vào localstorage
+    luulocalStorage();
+}
+
 
 
 //LƯU DỮ LIỆU HIỂN THỊ TRÊN TRÌNH DUYỆT ĐÃ CÓ REFRESH PAGE
