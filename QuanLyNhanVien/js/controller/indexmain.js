@@ -19,54 +19,47 @@ document.getElementById('btnThem').onclick = function () {
     document.getElementById('luongCB').value = '';
     document.getElementById('chucvu').value = 'Chọn chức vụ';
 
-    var inpt = document.querySelector('#luongCB');
-    // Add an event listener to the input element
-    inpt.addEventListener(`keyup`, function (event) {
-        // Current string value of the input
-        const value = this.value;
+    // var inpt = document.querySelector('#luongCB');
+    // // Add an event listener to the input element
+    // inpt.addEventListener(`keyup`, function (event) {
+    //     // Current string value of the input
+    //     const value = this.value;
 
-        // Split the value string into an array on each decimal and 
-        // count the number of elements in the array
-        const decimalCount = value.split(`.`).length - 1;
+    //     // Split the value string into an array on each decimal and 
+    //     // count the number of elements in the array
+    //     const decimalCount = value.split(`.`).length - 1;
 
-        // Don't do anything if a first decimal is entered
-        if (event.key === `.` && decimalCount === 1) return
+    //     // Don't do anything if a first decimal is entered
+    //     if (event.key === `.` && decimalCount === 1) return
 
-        // Remove any commas from the string and convert to a float
-        // This will remove any non digit characters and second decimals
-        const numericVal = parseFloat(value.replace(/,/g, ''));
+    //     // Remove any commas from the string and convert to a float
+    //     // This will remove any non digit characters and second decimals
+    //     const numericVal = parseFloat(value.replace(/,/g, ''));
 
-        //NumberFormat options
-        const options = {
-            style: `decimal`,
-            maximumFractionDigits: 20,
-        };
+    //     //NumberFormat options
+    //     const options = {
+    //         style: `decimal`,
+    //         maximumFractionDigits: 20,
+    //     };
 
-        // Assign the formatted number to the input box
-        this.value = new Intl.NumberFormat(`en-US`, options).format(numericVal);
-    })
+    //     // Assign the formatted number to the input box
+    //     this.value = new Intl.NumberFormat(`en-US`, options).format(numericVal);
+    // })
     document.getElementById('btnThemNV').onclick = function () {
         //input: thông tin nhân viên
         //tạo đối tượng
         var nhanVien = new NhanVien();
-
-        //Số tiền lương CB: hiển thị dạng số có phân cách bằng phẩy, nhưng giá trị vẫn trả về dạng Number để tính toán
-        var luongcc = document.querySelector('#luongCB').value;
-        console.log(Number(luongcc.replace(/,/g, "")) + 1);
-        // console.log(Number(luongcc.replace(',', '')) + 1); //thay thế "phẩy" = "rỗng", rồi ép thành Number
-        // console.log(nhanVien)
+        var valid = true; //mặc định form là hợp lệ
+        // console.log(nhanVien);
         //lấy thông tin từ người dùng
 
-
-        {//VALIDATE taiKhoan: không rỗng, từ 4 - 6 ký số
+        {//VALIDATE taiKhoan: không rỗng,chứa ký từ, từ 4 - 6 ký số
             nhanVien.taiKhoan = document.querySelector('#tknv').value;
-            var account = document.forms['myForm']['tk'].value;
-            if (account == '' || account.length > 6 || account.length < 4) {
-                document.getElementById('tknv').value = '';
-                alert('Name must be filled out and 6 characters at maximum');
-                return false;
-            }
+            valid &= kiemTraRong(nhanVien.taiKhoan, '#error_required_taiKhoan', 'Your account')
+                & kiemTraKyTu(nhanVien.taiKhoan, '#error_taiKhoanKyTu', 'Your account')
+                & kiemTraDoDai(nhanVien.taiKhoan, '#error_taiKhoanDoDai', 'Your account');
         }
+
 
         {//VALIDATE hoTen
             //nếu tên có dấu thì không xét được
@@ -183,10 +176,8 @@ document.getElementById('btnThem').onclick = function () {
         }
 
         {//VALIDATE luongCoBan
-            var luongcc = document.querySelector('#luongCB').value;
-            console.log(Number(luongcc.replace(/,/g, "")) + 1);
 
-            nhanVien.luongCoBan = Number(luongcc.replace(/,/g, ""));
+            nhanVien.luongCoBan = Number(document.querySelector('#luongCB').value);
             // Add Thousands Separator to Numeric Input(chưa định dạng được)
             // https://stackoverflow.com/questions/71028035/add-thousand-separator-with-javascript-when-add-input-dynamically
 
@@ -266,10 +257,13 @@ document.getElementById('btnThem').onclick = function () {
             }
         }
 
+        if (valid != true) {//khác true khi đã đã dính vào ít nhất 1 if ở trên}
+            return;
+        }
 
         //tạo ra TABLE theo hướng đối tượng
         mangNhanVien.push(nhanVien);
-        luulocalStorage();
+        // luulocalStorage();
         console.log('mangNhanVien', mangNhanVien);
         renderTableNhanVien(mangNhanVien);
     }
@@ -407,32 +401,6 @@ function chinhSua(taiKhoanClick) {
 //tạo object mới rồi gán giá trị input thay đổi cho nó
 document.querySelector('#btnCapNhat').onclick = function () {
     var nvMoi = new NhanVien();
-    var inpt = document.querySelector('#luongCB');
-    // Add an event listener to the input element
-    inpt.addEventListener(`keyup`, function (event) {
-        // Current string value of the input
-        const value = this.value;
-
-        // Split the value string into an array on each decimal and 
-        // count the number of elements in the array
-        const decimalCount = value.split(`.`).length - 1;
-
-        // Don't do anything if a first decimal is entered
-        if (event.key === `.` && decimalCount === 1) return
-
-        // Remove any commas from the string and convert to a float
-        // This will remove any non digit characters and second decimals
-        const numericVal = parseFloat(value.replace(/,/g, ''));
-
-        //NumberFormat options
-        const options = {
-            style: `decimal`,
-            maximumFractionDigits: 20,
-        };
-
-        // Assign the formatted number to the input box
-        this.value = new Intl.NumberFormat(`en-US`, options).format(numericVal);
-    })
 
     {//VALIDATE taiKhoan
         nvMoi.taiKhoan = document.querySelector('#tknv').value;
@@ -545,8 +513,8 @@ document.querySelector('#btnCapNhat').onclick = function () {
     }
 
     {//VALIDATE luongCB
-        var luongcc = document.querySelector('#luongCB').value;
-        nvMoi.luongCoBan = Number(luongcc.replace(/,/g, ""));
+        nvMoi.luongCoBan = Number(document.querySelector('#luongCB').value);
+
         if (Number(nvMoi.luongCoBan) >= 1e+6 && Number(nvMoi.luongCoBan) <= 20e+6) {
         }
         else if (Number(nvMoi.luongCoBan) < 1e+6 || Number(nvMoi.luongCoBan) > 20e+6) {
@@ -674,19 +642,11 @@ document.querySelector('#btnTimNV').onclick = function () {
     var loaiNhanVien = document.querySelector('#searchName').value;
     //lấy ra thông tin nhân viên tại vị trí đó
     // var indexSort = mangNhanVien.findIndex(nv => nv.xepLoai === loaiNhanVien);
-    //xóa cái tồn tại trước đó
-    for (var index = 0; index < mangNhanVien.length; index++) {
-        if (arrXepLoai[index] != '') {
-            arrXepLoai.splice(index, arrXepLoai.length);
-        }
-    }
-    //tạo cái mới đưa vào bảng
     for (var index = 0; index < mangNhanVien.length; index++) {
         var nvSort = mangNhanVien[index];
         if (nvSort.xepLoai === loaiNhanVien) {
             arrXepLoai.push(nvSort);
         }
-
     }
 
     console.log('arrXepLoai', arrXepLoai);
