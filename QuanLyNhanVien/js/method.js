@@ -9,6 +9,17 @@ function kiemTraRong(value, selectorError, name) {
     document.querySelector(selectorError).innerHTML = name + ' must be filled out!';
     return false;
 }
+function kiemTraSoRong(value, selectorError, name) {
+
+    //.trim(): loại bỏ khoảng trống đầu và cuối của chuỗi
+    //     abc     =>abc
+    if (value !== '') {
+        document.querySelector(selectorError).innerHTML = '';
+        return true;
+    }
+    document.querySelector(selectorError).innerHTML = name + ' must be filled out!';
+    return false;
+}
 
 function kiemTraKyTu(value, selectorError, name) {
     var regexLetter = /^[A-Z a-z]+$/;//có khoảng trống giữa A-Z vs a-z: cho phép khoảng trống
@@ -16,8 +27,12 @@ function kiemTraKyTu(value, selectorError, name) {
         document.querySelector(selectorError).innerHTML = '';
         return true;
     }
-    document.querySelector(selectorError).innerHTML = name + ' is not a valid letter';
-    return false;
+    // console.log(regexLetter.test(value.trim()));
+    else if (value.trim() !== '') {
+        document.querySelector(selectorError).innerHTML = name + ' is not a valid letter';
+        return false;
+    }
+    else { return false };
 }
 
 function kiemTraSo(value, selectorError, name) {
@@ -36,7 +51,11 @@ function kiemTraEmail(value, selectorError, name) {
         document.querySelector(selectorError).innerHTML = '';
         return true;
     }
-    document.querySelector(selectorError).innerHTML = name + ' is not a valid email';
+    else if (value.trim() !== '') {
+        document.querySelector(selectorError).innerHTML = name + ' is not a valid email';
+        return false;
+    }
+    else { return false };
 }
 
 function kiemTraNgay(value, selectorError, name) {
@@ -62,7 +81,6 @@ function kiemTraNgay(value, selectorError, name) {
         //     var pdate = inputText.value.split('-');
         // }
         else {
-            document.querySelector(selectorError).innerHTML = name + ' is not a valid date';
             return false;
         }
         var dd = parseInt(pdate[0]);
@@ -72,7 +90,7 @@ function kiemTraNgay(value, selectorError, name) {
         var ListofDays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
         if (mm == 1 || mm > 2) {
             if (dd > ListofDays[mm - 1]) {
-                document.querySelector(selectorError).innerHTML = name + ' is not a valid date';
+
                 return false;
             }
         }
@@ -82,70 +100,93 @@ function kiemTraNgay(value, selectorError, name) {
                 lyear = true;
             }
             if ((lyear == false) && (dd >= 29)) {
-                document.querySelector(selectorError).innerHTML = name + ' is not a valid date';
+
                 return false;
             }
             if ((lyear == true) && (dd > 29)) {
-                document.querySelector(selectorError).innerHTML = name + ' is not a valid date';
+
                 return false;
             }
         }
     }
-    document.querySelector(selectorError).innerHTML = name + ' is not a valid date';
-    return false;
+    else if (value.trim() !== '') {
+        return false;
+    }
+    else { return false };
 }
 
 function kiemTraDoDai(value, selectorError, name, minLength, maxLength) {
     var lengthValue = value.length;
-    if (lengthValue > maxLength || lengthValue < minLength) {
+    if (value.trim() == '') {
+        document.querySelector(selectorError).innerHTML = '';
+        return false;
+    }
+    else if (lengthValue > maxLength || lengthValue < minLength
+    ) {
         document.querySelector(selectorError).innerHTML = name + ' is from ' + minLength + ' to ' + maxLength + ' characters';
         return false;
     }
-    document.querySelector(selectorError).innerHTML = '';
+    else if (lengthValue <= maxLength || lengthValue >= minLength) {
+        document.querySelector(selectorError).innerHTML = '';
+        return true;
+    }
+    else { return false };
 }
 
 function kiemTraGiaTri(value, selectorError, name, minValue, maxValue) {
-    value = Number(value);
-    if (value > maxValue || value < minValue) {
-        document.querySelector(selectorError).innerHTML = name + ' is from' + minValue + ' to ' + maxValue;
+    // value = Number(value);
+    if (Number(value) <= maxValue && Number(value) >= minValue) {
+        document.querySelector(selectorError).innerHTML = '';
+        return true;
+    }
+    //khi để trống sẽ là '' (rỗng) nhưng ép kiểu Number => '' sẽ biến thành 0. Nếu không nhập vào thì cần tạo điều kiện: vừa khác '' && vừa khác 0
+    else if (value !== '' && value !== 0) {
+        document.querySelector(selectorError).innerHTML = name + ' is from '
+            + minValue.toLocaleString("jp-JP", { style: "currency", currency: "JPY" })
+            + ' to ' +
+            maxValue.toLocaleString("jp-JP", { style: "currency", currency: "JPY" });
         return false;
     }
-    document.querySelector(selectorError).innerHTML = '';
-    return true;
+    else { return false };
+}
+function kiemTraGio(value, selectorError, name, minValue, maxValue) {
+    // value = Number(value);
+    if (Number(value) <= maxValue && Number(value) >= minValue) {
+        document.querySelector(selectorError).innerHTML = '';
+        return true;
+    }
+    //khi để trống sẽ là '' (rỗng) nhưng ép kiểu Number => '' sẽ biến thành 0. Nếu không nhập vào thì cần tạo điều kiện: vừa khác '' && vừa khác 0
+    else if (value !== '' && value !== 0) {
+        document.querySelector(selectorError).innerHTML = name + ' is from ' + minValue + 'h' + ' to ' + maxValue + 'h';
+        return false
+    }
+    else if (value == '' || Number(value) == 0) {
+        document.querySelector(selectorError).innerHTML = name + ' is from ' + minValue + 'h' + ' to ' + maxValue + 'h';
+        return false;
+    }
+
+    else { return false };
 }
 
 function kiemTraOption(value, selectorError, name) {
-    if (value == 'Sếp' || value == 'Trưởng phòng' || value == 'Nhân viên') {
+    if (value != "Chọn chức vụ") {
+        return true;
     }
-    document.querySelector(selectorError).innerHTML = 'Please choose other options';
+    document.querySelector(selectorError).innerHTML = name + ' is not a valid position';
+    return false;
 }
 
-function tinhTongLuong(valueChucVu, valueLuongCB, valueTong) {
-    if (valueChucVu == 'Sếp') {
-        valueTong = Number(valueLuongCB * 3).toLocaleString("jp-JP", { style: "currency", currency: "JPY" });
+function kiemTraMatKhau(value, selectorError, name) {
+    // var decimal = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{6,10}$/;
+    var decimal = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{6,10}$/
+    if (decimal.test(value)) {
+        document.querySelector(selectorError).value = '';
+        console.log('mat khau hop le');
+        return true;
     }
-    else if (valueChucVu == 'Trưởng phòng') {
-        valueTong = Number(valueLuongCB * 2).toLocaleString("jp-JP", { style: "currency", currency: "JPY" });
-    }
-    else if (valueChucVu == 'Nhân viên') {
-        valueTong = Number(valueLuongCB * 1).toLocaleString("jp-JP", { style: "currency", currency: "JPY" });
-    }
-    else {
-        valueLuongCB = 0;
-    }
-}
 
-function xepLoai(valueGioLam, valueXepLoai, E, G, M) {
-    if (Number(valueGioLam) >= E) {
-        valueXepLoai = 'Nhân viên xuất sắc';
-    }
-    else if (Number(valueGioLam) < E && Number(valueGioLam) >= G) {
-        valueXepLoai = 'Nhân viên giỏi';
-    }
-    else if (Number(valueGioLam) < G && Number(valueGioLam) >= M) {
-        valueXepLoai = 'Nhân viên khá';
-    }
-    else {
-        valueXepLoai = 'Nhân viên trung bình';
-    }
+    document.querySelector(selectorError).innerHTML = name + ' is not a valid password';
+    console.log('mat khau sai');
+    return false;
+
 }

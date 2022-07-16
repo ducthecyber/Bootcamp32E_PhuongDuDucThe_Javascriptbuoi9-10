@@ -52,8 +52,9 @@ document.getElementById('btnThem').onclick = function () {
 
         //Số tiền lương CB: hiển thị dạng số có phân cách bằng phẩy, nhưng giá trị vẫn trả về dạng Number để tính toán
         var luongcc = document.querySelector('#luongCB').value;
-        console.log(Number(luongcc.replace(/,/g, "")) + 1);
-        // console.log(Number(luongcc.replace(',', '')) + 1); //thay thế "phẩy" = "rỗng", rồi ép thành Number
+        // console.log(Number(luongcc.replace(/,/g, "")) + 1);
+        
+        console.log(luongcc.replaceAll(',', '')); //thay thế "phẩy" = "rỗng", rồi ép thành Number
         // console.log(nhanVien)
         //lấy thông tin từ người dùng
 
@@ -63,8 +64,7 @@ document.getElementById('btnThem').onclick = function () {
             var account = document.forms['myForm']['tk'].value;
             if (account == '' || account.length > 6 || account.length < 4) {
                 document.getElementById('tknv').value = '';
-                alert('Name must be filled out and 6 characters at maximum');
-                return false;
+                alert('Name must be filled out and 6 characters at maximum');                                return false;
             }
         }
 

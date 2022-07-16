@@ -1,5 +1,5 @@
 //Tạo ra kiểu dữ liệu nhân viên
-function NhanVien(){
+function NhanVien() {
     this.taiKhoan = '';
     this.hoTen = '';
     this.email = '';
